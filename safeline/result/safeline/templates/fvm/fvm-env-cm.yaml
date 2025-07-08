@@ -1,0 +1,9 @@
+---
+# Source: safeline/templates/fvm/fvm-env-cm.yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: release-name-safeline-fvm-env
+data:
+  MGT_HOST: release-name-safeline-mgt
+  DETECTOR_HOST: release-name-safeline-detector

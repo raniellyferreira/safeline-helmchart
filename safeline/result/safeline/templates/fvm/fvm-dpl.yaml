@@ -1,0 +1,63 @@
+---
+# Source: safeline/templates/fvm/fvm-dpl.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-safeline-fvm
+  labels:
+    heritage: Helm
+    release: release-name
+    chart: safeline
+    app: "safeline"
+    component: fvm
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      release: release-name
+      app: "safeline"
+      component: fvm
+  template:
+    metadata:
+      labels:
+        release: release-name
+        app: "safeline"
+        component: fvm
+      annotations:
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 120
+      containers:
+      - name: fvm
+        image: swr.cn-east-3.myhuaweicloud.com/chaitin-safeline/safeline-fvm:8.10.1
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: release-name-safeline-fvm-env
+        ports:
+          - name: api
+            containerPort: 9004
+          - name: web
+            containerPort: 80
+        volumeMounts:
+          - name: localtime
+            mountPath: /etc/localtime
+            readOnly: true
+        readinessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime

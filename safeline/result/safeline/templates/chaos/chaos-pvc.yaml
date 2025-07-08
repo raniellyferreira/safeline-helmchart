@@ -1,0 +1,20 @@
+---
+# Source: safeline/templates/chaos/chaos-pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: release-name-safeline-chaos
+  annotations:
+    helm.sh/resource-policy: keep
+  labels:
+    heritage: Helm
+    release: release-name
+    chart: safeline
+    app: "safeline"
+    component: chaos
+spec:
+  accessModes: 
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi

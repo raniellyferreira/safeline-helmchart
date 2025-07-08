@@ -1,0 +1,10 @@
+---
+# Source: safeline/templates/luigi/luigi-env-cm.yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: release-name-safeline-luigi-env
+data:
+  DETECTOR_HOST: release-name-safeline-detector
+  MGT_IP: release-name-safeline-mgt
+  LUIGI_PG: postgres://safeline-ce:changeit@safeline-pg:5432/safeline-ce?sslmode=disable

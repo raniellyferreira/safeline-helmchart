@@ -1,0 +1,35 @@
+---
+# Source: safeline/templates/chaos/chaos-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "release-name-safeline-chaos"
+  labels:
+    heritage: Helm
+    release: release-name
+    chart: safeline
+    app: "safeline"
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9000
+    - name: stpp
+      protocol: TCP
+      port: 23333
+    - name: challenge
+      protocol: TCP
+      port: 8080
+    - name: wrapi
+      protocol: TCP
+      port: 9001
+    - name: wrtcp
+      protocol: TCP
+      port: 9002
+    - name: authserve
+      protocol: TCP
+      port: 8088
+  selector:
+    release: release-name
+    app: "safeline"
+    component: chaos

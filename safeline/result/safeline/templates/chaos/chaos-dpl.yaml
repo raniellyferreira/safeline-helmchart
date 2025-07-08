@@ -1,0 +1,105 @@
+---
+# Source: safeline/templates/chaos/chaos-dpl.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-safeline-chaos
+  labels:
+    heritage: Helm
+    release: release-name
+    chart: safeline
+    app: "safeline"
+    component: chaos
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      release: release-name
+      app: "safeline"
+      component: chaos
+  template:
+    metadata:
+      labels:
+        release: release-name
+        app: "safeline"
+        component: chaos
+      annotations:
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 120
+      initContainers:
+      - name: cp-chaos-toml-file
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+          - |-
+            sleep 3 && /bin/sh /cp_config_toml.sh
+        volumeMounts:
+          - mountPath: /app/chaos
+            name: chaos
+          - name: chaos-conf
+            mountPath: /config.toml
+            subPath: config.toml
+          - name: chaos-wr-conf
+            mountPath: /waiting.yaml
+            subPath: waiting.yaml
+          - name: chaos-challenge-conf
+            mountPath: /challenge.yaml
+            subPath: challenge.yaml
+          - name: safeline-chaos-cp-toml
+            mountPath: /cp_config_toml.sh
+            subPath: cp_config_toml.sh
+      containers:
+      - name: chaos
+        image: swr.cn-east-3.myhuaweicloud.com/chaitin-safeline/safeline-chaos:8.10.1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: stpp
+            containerPort: 23333
+          - name: http
+            containerPort: 9000
+        envFrom:
+        - configMapRef:
+            name: release-name-safeline-chaos-env
+        volumeMounts:
+          - name: localtime
+            mountPath: /etc/localtime
+            readOnly: true
+          - mountPath: /app/chaos
+            name: chaos
+        readinessProbe:
+          tcpSocket:
+            port: 9000
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+      volumes:
+        - name: chaos-conf
+          configMap:
+            name: release-name-safeline-chaos
+        - name: chaos-wr-conf
+          configMap:
+            name: release-name-safeline-chaos
+        - name: chaos-challenge-conf
+          configMap:
+            name: release-name-safeline-chaos
+        - name: safeline-chaos-cp-toml
+          configMap:
+            name: safeline-chaos-cp-toml
+            defaultMode: 0755
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: chaos
+          persistentVolumeClaim:
+            claimName: release-name-safeline-chaos

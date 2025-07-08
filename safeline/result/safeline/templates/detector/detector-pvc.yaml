@@ -1,0 +1,20 @@
+---
+# Source: safeline/templates/detector/detector-pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: release-name-safeline-detector
+  annotations:
+    helm.sh/resource-policy: keep
+  labels:
+    heritage: Helm
+    release: release-name
+    chart: safeline
+    app: "safeline"
+    component: detector
+spec:
+  accessModes: 
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi

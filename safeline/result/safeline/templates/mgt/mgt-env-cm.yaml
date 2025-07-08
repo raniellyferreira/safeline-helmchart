@@ -1,0 +1,16 @@
+---
+# Source: safeline/templates/mgt/mgt-env-cm.yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: release-name-safeline-mgt-env
+data:
+  MGT_PG: postgres://safeline-ce:changeit@safeline-pg:5432/safeline-ce?sslmode=disable
+  LUIGI_HOST: release-name-safeline-luigi
+  CHAOS_SERVE_ADDR: release-name-safeline-chaos:9000
+  CHAOS_CHALLENGE_ADDR: release-name-safeline-chaos:8080
+  CHAOS_AUTH_ADDR: release-name-safeline-chaos:8088
+  FVM_HOST: release-name-safeline-fvm
+  DETECTOR_HOST: release-name-safeline-detector
+  WAITING_ROOM_API: release-name-safeline-chaos:9001
+  TCD_TASK_ADDRESS: release-name-safeline-tengine:9999

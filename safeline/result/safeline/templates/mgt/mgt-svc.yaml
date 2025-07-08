@@ -1,0 +1,27 @@
+---
+# Source: safeline/templates/mgt/mgt-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "release-name-safeline-mgt"
+  labels:
+    heritage: Helm
+    release: release-name
+    chart: safeline
+    app: "safeline"
+spec:
+  type: NodePort
+  ports:
+    - name: web
+      port: 1443
+      nodePort: 31443
+    - name: api
+      protocol: TCP
+      port: 80
+    - name: tcd
+      protocol: TCP
+      port: 8000
+  selector:
+    release: release-name
+    app: "safeline"
+    component: mgt

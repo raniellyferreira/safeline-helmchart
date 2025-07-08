@@ -1,0 +1,20 @@
+---
+# Source: safeline/templates/luigi/luigi-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "release-name-safeline-luigi"
+  labels:
+    heritage: Helm
+    release: release-name
+    chart: safeline
+    app: "safeline"
+spec:
+  ports:
+    - name: luigi
+      protocol: TCP
+      port: 80
+  selector:
+    release: release-name
+    app: "safeline"
+    component: luigi

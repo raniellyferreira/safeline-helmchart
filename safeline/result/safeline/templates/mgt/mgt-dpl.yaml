@@ -1,0 +1,103 @@
+---
+# Source: safeline/templates/mgt/mgt-dpl.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-safeline-mgt
+  labels:
+    heritage: Helm
+    release: release-name
+    chart: safeline
+    app: "safeline"
+    component: mgt
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      release: release-name
+      app: "safeline"
+      component: mgt
+  template:
+    metadata:
+      labels:
+        release: release-name
+        app: "safeline"
+        component: mgt
+      annotations:
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 120
+      initContainers:
+      - name: delete-lost-found-dir
+        image: swr.cn-east-3.myhuaweicloud.com/chaitin-safeline/safeline-mgt:8.10.1
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+          - |-
+            rm -rf /app/data/lost+found && while true; do sleep 3 && nc -zvw1 safeline-pg 5432 && nc -zvw1 release-name-safeline-fvm 80 && exit 0 || sleep 3; done; exit 1
+        volumeMounts:
+          - mountPath: /app/data
+            name: mgt
+      containers:
+      - name: mgt
+        image: swr.cn-east-3.myhuaweicloud.com/chaitin-safeline/safeline-mgt:8.10.1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: web
+            containerPort: 1443
+          - name: api
+            containerPort: 80
+          - name: tcd
+            containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: release-name-safeline-mgt-env
+        volumeMounts:
+          - mountPath: /app/data
+            name: mgt
+          - name: localtime
+            mountPath: /etc/localtime
+            readOnly: true
+          - name: nginx-log
+            mountPath: /app/log/nginx
+          - name: safeline-sock-dir
+            mountPath: /app/run
+        livenessProbe:
+          httpGet:
+            scheme: HTTPS
+            port: 1443
+            path: /api/open/health
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            scheme: HTTPS
+            port: 1443
+            path: /api/open/health
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: mgt
+          persistentVolumeClaim:
+            claimName: release-name-safeline-mgt
+        - name: nginx-log
+          persistentVolumeClaim:
+            claimName: release-name-safeline-tengine-logs
+        - name: safeline-sock-dir
+          emptyDir: {}
