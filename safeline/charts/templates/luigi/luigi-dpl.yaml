@@ -66,6 +66,9 @@ spec:
             readOnly: true
           - name: luigi
             mountPath: /app/data
+            {{- if .Values.persistence.persistentVolumeClaim.luigi.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.luigi.subPath }}
+            {{- end }}
         readinessProbe:
           tcpSocket:
             port: {{ template "safeline.luigi.port" . }}

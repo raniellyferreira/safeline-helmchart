@@ -42,6 +42,7 @@ persistence:
     database:
       existingClaim: ""
       storageClass: ""
+      subPath: ""
       accessMode: ReadWriteOnce
       size: 1Gi
       annotations: {}
@@ -49,6 +50,7 @@ persistence:
     detectorLogs:
       existingClaim: ""
       storageClass: ""
+      subPath: ""
       accessMode: ReadWriteMany
       size: 1Gi
       annotations: {}
@@ -56,6 +58,7 @@ persistence:
     tengineLogs:
       existingClaim: ""
       storageClass: ""
+      subPath: ""
       accessMode: ReadWriteMany
       size: 1Gi
       annotations: {}
@@ -63,6 +66,7 @@ persistence:
     nginx:
       existingClaim: ""
       storageClass: ""
+      subPath: ""
       accessMode: ReadWriteMany
       size: 1Gi
       annotations: {}
@@ -70,6 +74,7 @@ persistence:
     mgt:
       existingClaim: ""
       storageClass: ""
+      subPath: ""
       accessMode: ReadWriteMany
       size: 1Gi
       annotations: {}
@@ -77,6 +82,7 @@ persistence:
     detector:
       existingClaim: ""
       storageClass: ""
+      subPath: ""
       accessMode: ReadWriteMany
       size: 1Gi
       annotations: {}
@@ -84,6 +90,7 @@ persistence:
     tengine:
       existingClaim: ""
       storageClass: ""
+      subPath: ""
       accessMode: ReadWriteMany
       size: 1Gi
       annotations: {}
@@ -91,6 +98,7 @@ persistence:
     luigi:
       existingClaim: ""
       storageClass: ""
+      subPath: ""
       accessMode: ReadWriteMany
       size: 1Gi
       annotations: {}
@@ -98,6 +106,7 @@ persistence:
     chaos:
       existingClaim: ""
       storageClass: ""
+      subPath: ""
       accessMode: ReadWriteMany
       size: 1Gi
       annotations: {}

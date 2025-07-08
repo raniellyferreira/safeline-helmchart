@@ -48,8 +48,14 @@ spec:
         volumeMounts:
           - mountPath: /resources/detector
             name: detector
+            {{- if .Values.persistence.persistentVolumeClaim.detector.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.detector.subPath }}
+            {{- end }}
           - mountPath: /logs/detector
             name: logs
+            {{- if .Values.persistence.persistentVolumeClaim.detectorLogs.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.detectorLogs.subPath }}
+            {{- end }}
       {{- end }}
       containers:
       - name: detector
@@ -68,8 +74,14 @@ spec:
         volumeMounts:
           - mountPath: /resources/detector
             name: detector
+            {{- if .Values.persistence.persistentVolumeClaim.detector.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.detector.subPath }}
+            {{- end }}
           - mountPath: /logs/detector
             name: logs
+            {{- if .Values.persistence.persistentVolumeClaim.detectorLogs.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.detectorLogs.subPath }}
+            {{- end }}
           - name: localtime
             mountPath: /etc/localtime
             readOnly: true

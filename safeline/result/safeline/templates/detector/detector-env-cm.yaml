@@ -1,9 +1,0 @@
----
-# Source: safeline/templates/detector/detector-env-cm.yaml
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: release-name-safeline-detector-env
-data:
-  LOG_DIR: "/logs/detector"
-  MGT_HOST: release-name-safeline-mgt

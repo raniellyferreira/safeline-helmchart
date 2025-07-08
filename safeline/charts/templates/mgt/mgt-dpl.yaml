@@ -47,6 +47,9 @@ spec:
         volumeMounts:
           - mountPath: /app/data
             name: mgt
+            {{- if .Values.persistence.persistentVolumeClaim.mgt.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.mgt.subPath }}
+            {{- end }}
       containers:
       - name: mgt
         image: {{ default .Values.global.image.registry .Values.mgt.image.registry }}/{{ .Values.mgt.image.repository }}{{ .Values.global.image.region }}:{{ default .Chart.AppVersion .Values.mgt.image.tag }}
@@ -64,6 +67,9 @@ spec:
         volumeMounts:
           - mountPath: /app/data
             name: mgt
+            {{- if .Values.persistence.persistentVolumeClaim.mgt.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.mgt.subPath }}
+            {{- end }}
           - name: localtime
             mountPath: /etc/localtime
             readOnly: true

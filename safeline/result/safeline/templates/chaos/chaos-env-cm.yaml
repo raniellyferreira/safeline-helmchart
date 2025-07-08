@@ -1,8 +1,0 @@
----
-# Source: safeline/templates/chaos/chaos-env-cm.yaml
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: release-name-safeline-chaos-env
-data:
-  DB_ADDR: postgres://safeline-ce:changeit@safeline-pg:5432/safeline-ce?sslmode=disable
