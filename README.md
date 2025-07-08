@@ -6,7 +6,7 @@
   <a target="_blank" href="https://waf-ce.chaitin.cn/">SafeLine Website</a> &nbsp; | &nbsp;
   <a target="_blank" href="https://github.com/yaencn/safeline-lts-helmchart">TLS Repository</a> &nbsp; | &nbsp;
   <a target="_blank" href="https://github.com/yaencn/safeline-helmchart">Preview Repository</a> &nbsp; | &nbsp;
-  <a target="_blank" href="https://github.com/yaencn/safeline-helmchart/blob/master/README_CN.md">中文文档</a>
+  <a target="_blank" href="https://github.com/yaencn/safeline-helmchart/blob/master/README_CN.md">Chinese Documentation</a>
 </p>
 
 ## ----- Readme -----
@@ -73,7 +73,7 @@ helm -n safeline uninstall safeline
 ## ----- Helm Build -----
 
 ```shell
-# 检测helmchart-template是否有语法问题
+# Check if helmchart-template has syntax issues
 cd safeline
 helm template charts/ --output-dir ./result 
 ```

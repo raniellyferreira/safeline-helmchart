@@ -6,27 +6,30 @@ imagePullPolicy: IfNotPresent
 
 global:
   image:
-    registry: swr.cn-east-3.myhuaweicloud.com/chaitin-safeline
+    registry: chaitin
     tag: ""
     region: ""
-  # 全局开启已端口模式暴露服务，牵扯修改服务暴露模式服务为：detector与chaos，打开此选项将增加多个configmap加载以及修改配置文件，会修改nginx.conf文件。
-  # 建议此向保持开启状态
+  # Global enable port mode to expose services, affecting the modification of service exposure mode for: detector and chaos, 
+  # enabling this option will add multiple configmap loads and modify configuration files, and will modify nginx.conf file.
+  # It is recommended to keep this option enabled
   exposeServicesAsPorts:
     enabled: true
-  # 设置雷池WAF控制台通过域名访问，如：demo.waf-ce.chaitin.cn
+  # Set SafeLine WAF console to be accessed through domain name, e.g.: demo.waf-ce.chaitin.cn
   ingress:
-    # 是否开启雷池WAF控制通过域名访问，默认未开启
+    # Whether to enable SafeLine WAF control through domain access, not enabled by default
     enabled: false
     hostname: waf.local
     ingressClassName: nginx
     annotations:
-      # 注释中的proxy-body-size的存储值，文件上传大小的最大值，即nginx.ingress.kubernetes.io/proxy-body-size的值，默认为200M
+      # The storage value of proxy-body-size in the annotation, the maximum value of file upload size, 
+      # i.e., the value of nginx.ingress.kubernetes.io/proxy-body-size, default is 200M
       proxyBodySize: 200M
     pathType: ImplementationSpecific
     path: /
     tls:
-      # 是否加载HelmChart外部的HTTPS域名证书Secret,如果有请填写Secret名称，默认不填写及域名仅开启http访问.
-      # 如填写如下项，请在运行该HelmChart前创建好对应的Secret。
+      # Whether to load the HTTPS domain certificate Secret outside HelmChart, if yes, please fill in the Secret name. 
+      # By default, it is not filled in and the domain name only enables http access.
+      # If you fill in the following items, please create the corresponding Secret before running the HelmChart.
       secretName: ""
 
 strategy:
