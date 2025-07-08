@@ -73,7 +73,7 @@ helm -n safeline uninstall safeline
 ## ----- Helm Build -----
 
 ```shell
-# 检测helmchart-template是否有语法问题
+# Check if helmchart-template has syntax issues
 cd safeline
 helm template charts/ --output-dir ./result 
 ```

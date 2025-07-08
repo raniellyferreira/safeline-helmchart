@@ -61,14 +61,29 @@ spec:
             readOnly: true
           - mountPath: /etc/nginx
             name: nginx
+            {{- if .Values.persistence.persistentVolumeClaim.nginx.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.nginx.subPath }}
+            {{- end }}
           - mountPath: /resources/detector
             name: detector
+            {{- if .Values.persistence.persistentVolumeClaim.detector.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.detector.subPath }}
+            {{- end }}
           - mountPath: /var/log/nginx
             name: logs
+            {{- if .Values.persistence.persistentVolumeClaim.tengineLogs.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.tengineLogs.subPath }}
+            {{- end }}
           - mountPath: /usr/local/nginx/cache
             name: cache
+            {{- if .Values.persistence.persistentVolumeClaim.tengine.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.tengine.subPath }}
+            {{- end }}
           - mountPath: /resources/chaos
             name: chaos
+            {{- if .Values.persistence.persistentVolumeClaim.chaos.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.chaos.subPath }}
+            {{- end }}
           - mountPath: /app/sock
             name: tengine-sock-dir
           {{- if .Values.global.exposeServicesAsPorts.enabled }}

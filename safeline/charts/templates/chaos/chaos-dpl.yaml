@@ -48,6 +48,9 @@ spec:
         volumeMounts:
           - mountPath: /app/chaos
             name: chaos
+            {{- if .Values.persistence.persistentVolumeClaim.chaos.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.chaos.subPath }}
+            {{- end }}
           - name: chaos-conf
             mountPath: /config.toml
             subPath: config.toml
@@ -79,6 +82,9 @@ spec:
             readOnly: true
           - mountPath: /app/chaos
             name: chaos
+            {{- if .Values.persistence.persistentVolumeClaim.chaos.subPath }}
+            subPath: {{ .Values.persistence.persistentVolumeClaim.chaos.subPath }}
+            {{- end }}
         readinessProbe:
           tcpSocket:
             port: {{ template "safeline.http.port" . }}
